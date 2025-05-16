@@ -1,0 +1,22 @@
+# Arquivos de log
+*.log
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# Arquivos de backup
+*.backup*
+
+# Arquivos do Windows
+Thumbs.db
+desktop.ini
+
+# Diretório de downloads
+silfaedocs/
+
+# Arquivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo 
