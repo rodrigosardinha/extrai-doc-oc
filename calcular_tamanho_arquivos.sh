@@ -1,12 +1,23 @@
 #!/bin/bash
 
-# Solicita o namespace
-read -p "Digite o namespace: " NAMESPACE
+# Lista todos os projetos disponíveis
+echo "Projetos disponíveis:"
+echo "----------------------------------------"
+oc projects | grep -v "^You have" | grep -v "^Using" | grep -v "^$" | sed 's/^  \* //' | sed 's/^    //' | awk '{print NR") " $1}'
+echo "----------------------------------------"
+
+# Solicita a seleção do projeto
+read -p "Digite o número do projeto que deseja utilizar: " NAMESPACE_NUMBER
+
+# Obtém o nome do projeto selecionado
+NAMESPACE=$(oc projects | grep -v "^You have" | grep -v "^Using" | grep -v "^$" | sed 's/^  \* //' | sed 's/^    //' | awk '{print $1}' | sed -n "${NAMESPACE_NUMBER}p")
 
 if [ -z "$NAMESPACE" ]; then
-    echo "Namespace não pode ser vazio!"
+    echo "Número de projeto inválido!"
     exit 1
 fi
+
+echo "Usando projeto: $NAMESPACE"
 
 # Lista todos os pods em status Running
 echo "Pods disponíveis em status Running:"
