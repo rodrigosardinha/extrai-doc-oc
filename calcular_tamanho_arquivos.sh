@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Verifica se está logado no OpenShift
+if ! oc whoami &>/dev/null; then
+    echo "Realizando login automático no OpenShift..."
+    oc login --token=sha256~ZP8azFm7voU4t-yWjxP_8BRh8iQy1N_gacq1ayasFVE --server=https://api.ocp.rio.gov.br:6443
+    if [ $? -ne 0 ]; then
+        echo "Erro ao realizar login. Por favor, verifique suas credenciais."
+        exit 1
+    fi
+    echo "Login realizado com sucesso!"
+fi
+
 # Lista todos os projetos disponíveis
 echo "Projetos disponíveis:"
 echo "----------------------------------------"
