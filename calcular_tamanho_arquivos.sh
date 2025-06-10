@@ -102,10 +102,21 @@ TAMANHO_DRAF=$(converter_unidade "$TAMANHO_DRAF")
 TAMANHO_OUTROS=$(oc exec $POD_NAME -n $NAMESPACE -- find /opt/silfaepub-docs -type f ! -name "*-draf" -exec du -ch {} + | grep total | awk '{print $1}' | somar_valores)
 TAMANHO_OUTROS=$(converter_unidade "$TAMANHO_OUTROS")
 
+# Conta o número de arquivos de cada tipo
+NUM_ARQUIVOS_DRAF=$(oc exec $POD_NAME -n $NAMESPACE -- find /opt/silfaepub-docs -type f -name "*-draf" | wc -l)
+NUM_ARQUIVOS_OUTROS=$(oc exec $POD_NAME -n $NAMESPACE -- find /opt/silfaepub-docs -type f ! -name "*-draf" | wc -l)
+TOTAL_ARQUIVOS=$((NUM_ARQUIVOS_DRAF + NUM_ARQUIVOS_OUTROS))
+
 # Exibe os resultados
 echo "----------------------------------------"
-echo "Tamanho dos arquivos com sufixo -draf: $TAMANHO_DRAF"
-echo "Tamanho dos outros arquivos: $TAMANHO_OUTROS"
+echo "Quantidade de arquivos:"
+echo "Arquivos com sufixo -draf: $NUM_ARQUIVOS_DRAF"
+echo "Outros arquivos: $NUM_ARQUIVOS_OUTROS"
+echo "Total de arquivos: $TOTAL_ARQUIVOS"
+echo "----------------------------------------"
+echo "Tamanho dos arquivos:"
+echo "Arquivos com sufixo -draf: $TAMANHO_DRAF"
+echo "Outros arquivos: $TAMANHO_OUTROS"
 echo "----------------------------------------"
 
 # Função para converter tamanho para bytes
